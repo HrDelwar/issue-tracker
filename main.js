@@ -1,14 +1,15 @@
 document.getElementById('issueInputForm').addEventListener('submit', (e) => {
+  e.preventDefault();
   const issueDescription = document.getElementById('issueDescription');
   const assignedTo = document.getElementById('issueAssignedTo');
   if (!issueDescription.value || !isNaN(issueDescription.value)) {
     document.getElementById('error-message').style.display = 'block';
     document.getElementById('error-message').innerText = 'Please add a description name.';
-  } else if(!assignedTo.value) {
+  } else if (!assignedTo.value) {
     document.getElementById('error-message').style.display = 'none';
     document.getElementById('err-msg-assignTo').style.display = 'block';
     document.getElementById('err-msg-assignTo').innerText = 'Please add a assigned name.';
-  }else{
+  } else {
     submitIssue(e);
   }
 });
@@ -53,17 +54,18 @@ const fetchIssues = () => {
   document.getElementById('err-msg-assignTo').style.display = 'none';
   document.getElementById('error-message').style.display = 'none';
   const issues = JSON.parse(localStorage.getItem('issues'));
-  const issuesList = document.getElementById('issuesList');
-  issuesList.innerHTML = '';
   let totalIssueCount = 0;
   let openIssueCount = 0;
-  for (var i = 0; i < issues.length; i++) {
-    totalIssueCount += 1;
-    const { id, description, severity, assignedTo, status } = issues[i];
-    if (status == 'Open') {
-      openIssueCount += 1;
-    };
-    issuesList.innerHTML += `<div class="well">
+  if (issues) {
+    const issuesList = document.getElementById('issuesList');
+    issuesList.innerHTML = '';
+    for (var i = 0; i < issues.length; i++) {
+      totalIssueCount += 1;
+      const { id, description, severity, assignedTo, status } = issues[i];
+      if (status == 'Open') {
+        openIssueCount += 1;
+      };
+      issuesList.innerHTML += `<div class="well">
                               <h6>Issue ID: ${id} </h6>
                               <p><span class="label label-info"> ${status} </span></p>
                               <h3 class='${status == "Closed" ? "strike" : ""}'> ${description} </h3>
@@ -72,7 +74,9 @@ const fetchIssues = () => {
                               <a href="#" onclick="closeIssue(${id})" class="btn btn-warning">Close</a>
                               <a href="#" onclick="deleteIssue(${id})" class="btn btn-danger">Delete</a>
                               </div>`;
+    }
   }
+
   document.getElementById('total-issue').innerText = totalIssueCount;
   document.getElementById('open-issue').innerText = openIssueCount;
   document.getElementById('closed-issue').innerText = totalIssueCount - openIssueCount;
