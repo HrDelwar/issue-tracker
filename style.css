@@ -1,0 +1,20 @@
+.display-2 {
+	font-size: 5rem;
+	font-weight: 700;
+}
+.strike {
+    text-decoration: line-through;
+}
+
+.badge {
+    font-size: 3rem;
+}
+
+.issue-tracker {
+    display: flex;
+    justify-content: space-between;
+}
+
+.well {
+    box-shadow: inset 0 1px 12px rgba(0, 0, 0, .5);
+}
